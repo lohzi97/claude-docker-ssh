@@ -6,11 +6,12 @@ services:
     volumes:
       # Persist Claude's auth and history
       - ./claude_data:/home/claude/.claude
-    networks:
-      # (optioanl) This matches the network name created by the n8n starter kit
-      - self-hosted-ai-starter-it_demo
 
-# (optional)
-networks:
-  self-hosted-ai-starter-it_demo:
-    external: true
+# OPTIONAL
+# Uncomment below and replace 'self-hosted-ai-starter-it_demo', which should matches existing created network, so that other service can access it
+#     networks:
+#       - self-hosted-ai-starter-it_demo
+
+# networks:
+#   self-hosted-ai-starter-it_demo:
+#     external: true

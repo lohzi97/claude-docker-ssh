@@ -39,10 +39,6 @@ ssh claude@localhost -p 2222
 
 - `./claude_data:/home/claude/.claude` - Persists Claude's authentication tokens, settings, and conversation history
 
-### Networking
-
-The container connects to an external Docker network named `self-hosted-ai-starter-it_demo` (referenced but optional). This allows it to communicate with other containers in an AI starter kit setup.
-
 ## Configuration
 
 Claude settings are stored in `claude_data/settings.json`. Use `settings-example.json` as a template. Key settings:
