@@ -27,6 +27,8 @@ USER claude
 # Expose SSH port
 EXPOSE 22
 
-# Switch back to root to start the SSH service
+# Create entrypoint to fix permissions and start SSH
 USER root
-CMD ["/usr/sbin/sshd", "-D"]
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+CMD ["/usr/local/bin/entrypoint.sh"]

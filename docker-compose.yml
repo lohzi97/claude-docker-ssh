@@ -1,8 +1,8 @@
 services:
-  ai-agent:
+  claude-docker-ssh:
     build: .
-    container_name: ai-agent
-    restart: always
+    container_name: claude-docker-ssh
+    restart: unless-stopped
     ports:
       - "2222:22"
     volumes:
