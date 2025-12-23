@@ -3,6 +3,8 @@ services:
     build: .
     container_name: ai-agent
     restart: always
+    ports:
+      - "2222:22"
     volumes:
       # Persist Claude's auth and history
       - ./claude_data:/home/claude/.claude
