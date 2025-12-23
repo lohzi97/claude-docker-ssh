@@ -1,0 +1,16 @@
+services:
+  ai-agent:
+    build: .
+    container_name: ai-agent
+    restart: always
+    volumes:
+      # Persist Claude's auth and history
+      - ./claude_data:/home/claude/.claude
+    networks:
+      # (optioanl) This matches the network name created by the n8n starter kit
+      - self-hosted-ai-starter-it_demo
+
+# (optional)
+networks:
+  self-hosted-ai-starter-it_demo:
+    external: true
