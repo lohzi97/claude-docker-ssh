@@ -6,6 +6,8 @@ services:
     ports:
       - "2222:22"
     volumes:
+      # Claude project config (permissions, MCP servers) - created on first run
+      - ./config/.claude.json:/home/claude/.claude.json
       # Persist Claude's auth and history
       - ./claude_data:/home/claude/.claude
 

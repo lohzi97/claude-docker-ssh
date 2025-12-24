@@ -88,7 +88,54 @@ The container is built on `node:20-bullseye-slim` and includes:
 
 | Host Path | Container Path | Purpose |
 |-----------|----------------|---------|
+| `./config/.claude.json` | `/home/claude/.claude.json` | Claude permissions and MCP servers |
 | `./claude_data` | `/home/claude/.claude` | Claude settings and history |
+
+## Permissions and MCP Configuration
+
+The `.claude.json` file controls Claude's permissions and MCP server configurations. This file is automatically created on the first run and mounted from the host for easy editing.
+
+### Initial Setup
+
+1. Start the container and SSH in:
+   ```bash
+   docker-compose up -d
+   ssh claude@localhost -p 2222
+   ```
+
+2. Run Claude once to initialize the config:
+   ```bash
+   claude
+   # Exit with Ctrl+D after initialization
+   ```
+
+3. Exit the container - the `.claude.json` file is now created at `./config/.claude.json` on your host
+
+### Editing Configuration
+
+Edit `./config/.claude.json` directly from your host. Changes are reflected immediately inside the container.
+
+Example permissions configuration:
+```json
+{
+  "permissions": {
+    "bash": "allow",
+    "fileWrite": "allow"
+  }
+}
+```
+
+Example MCP server configuration:
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-filesystem", "/allowed/path"]
+    }
+  }
+}
+```
 
 ## Project Structure
 
@@ -96,9 +143,13 @@ The container is built on `node:20-bullseye-slim` and includes:
 .
 ├── Dockerfile                 # Container image definition
 ├── docker-compose.yml         # Docker Compose configuration
+├── entrypoint.sh              # Container startup script
 ├── CLAUDE.md                  # Claude Code project instructions
 ├── README.md                  # This file
 ├── .gitignore                 # Git ignore rules
+├── config/
+│   └── .gitkeep               # Ensures config directory is tracked
+│   └── .claude.json           # Permissions and MCP servers (auto-created)
 └── claude_data/
     ├── settings.json          # Claude settings (not in git)
     └── settings-example.json  # Settings template
