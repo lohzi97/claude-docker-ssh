@@ -12,10 +12,11 @@ RUN apt-get update && apt-get install -y \
 # Setup SSH directory
 RUN mkdir /var/run/sshd
 
-# Create a user to connect as
-RUN useradd -m -s /bin/bash claude && \
-    echo "claude:claude-code-123" | chpasswd && \
-    adduser claude sudo
+# Create a user to connect as (password set via SSH_PASSWORD env var at runtime)
+RUN useradd -m -s /bin/bash claude && adduser claude sudo
+
+# Default SSH password (override via docker-compose or environment)
+ENV SSH_PASSWORD=claude-code-123
 
 # Install Claude Code globally
 RUN npm install -g @anthropic-ai/claude-code

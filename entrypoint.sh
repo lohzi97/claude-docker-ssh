@@ -15,5 +15,10 @@ fi
 # Also ensure the entire home directory is owned by claude
 chown -R claude:claude /home/claude
 
+# Set SSH password from environment variable
+if [ -n "$SSH_PASSWORD" ]; then
+    echo "claude:$SSH_PASSWORD" | chpasswd
+fi
+
 # Start SSH server
 exec /usr/sbin/sshd -D

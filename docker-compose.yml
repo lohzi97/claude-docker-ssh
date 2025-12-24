@@ -10,6 +10,9 @@ services:
       - ./config/.claude.json:/home/claude/.claude.json
       # Persist Claude's auth and history
       - ./claude_data:/home/claude/.claude
+    # Optional: Override default SSH password
+    # environment:
+    #   - SSH_PASSWORD=your-secure-password-here
 
 # OPTIONAL
 # Uncomment below and replace 'self-hosted-ai-starter-it_demo', which should matches existing created network, so that other service can access it

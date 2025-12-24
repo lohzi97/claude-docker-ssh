@@ -20,10 +20,27 @@ docker-compose up -d
 
 # SSH into the running container
 ssh claude@localhost -p 2222
-# Default password: claude-code-123
+# Default password: claude-code-123 (set via SSH_PASSWORD env var)
 ```
 
 ## Configuration
+
+### SSH Password
+
+The SSH password is set via the `SSH_PASSWORD` environment variable. The default password is `claude-code-123`.
+
+To use a custom password, uncomment and edit the environment section in `docker-compose.yml`:
+
+```yaml
+environment:
+  - SSH_PASSWORD=your-secure-password-here
+```
+
+Or pass it at runtime:
+
+```bash
+docker-compose run -e SSH_PASSWORD=newpass claude-docker-ssh
+```
 
 ### API Settings
 
@@ -53,7 +70,7 @@ Edit `claude_data/settings.json` with your settings:
 | Setting | Value |
 |---------|-------|
 | Username | `claude` |
-| Password | `claude-code-123` |
+| Password | Set via `SSH_PASSWORD` env var (default: `claude-code-123`) |
 | SSH Port | 22 (map to host port in docker-compose.yml if needed) |
 
 ## Docker Commands
@@ -157,6 +174,7 @@ Example MCP server configuration:
 
 ## Security Notes
 
-- The default password should be changed in production environments
+- The SSH password is set via the `SSH_PASSWORD` environment variable - override the default in production
+- The default password is visible in `docker inspect`; for better security, always set `SSH_PASSWORD` explicitly
 - API keys are excluded from git via `.gitignore`
 - Consider using SSH keys instead of password authentication for production use

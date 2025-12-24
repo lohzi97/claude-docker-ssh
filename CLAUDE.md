@@ -23,7 +23,18 @@ docker-compose logs -f
 
 # SSH into the running container
 ssh claude@localhost -p 2222
-# Default password: claude-code-123
+# Default password: claude-code-123 (set via SSH_PASSWORD env var)
+```
+
+## Configuration
+
+### SSH Password
+
+Set via `SSH_PASSWORD` environment variable. Default is `claude-code-123`. Override in `docker-compose.yml`:
+
+```yaml
+environment:
+  - SSH_PASSWORD=your-secure-password-here
 ```
 
 ## Architecture
@@ -53,5 +64,5 @@ The `.gitignore` excludes `settings.json` to prevent API keys from being committ
 ## Container Credentials
 
 - **Username**: `claude`
-- **Password**: `claude-code-123`
+- **Password**: Set via `SSH_PASSWORD` env var (default: `claude-code-123`)
 - **SSH Port**: 22 (map to host port in docker-compose.yml if needed)
