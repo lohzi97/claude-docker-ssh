@@ -8,7 +8,8 @@ if [ -d /home/claude/.claude ]; then
 fi
 
 # Fix if Docker created .claude.json as a directory instead of a file
-if [ -d /home/claude/.claude.json ]; then
+# Skip if it's a bind mount (cannot remove mounted paths)
+if [ -d /home/claude/.claude.json ] && ! mountpoint -q /home/claude/.claude.json; then
     rm -rf /home/claude/.claude.json
 fi
 
