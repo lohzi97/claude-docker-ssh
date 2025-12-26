@@ -10,6 +10,8 @@ services:
       - ./config/.claude.json:/home/claude/.claude.json
       # Persist Claude's auth and history
       - ./claude_data:/home/claude/.claude
+      # Convenience scripts
+      - ./scripts:/home/claude/scripts
     # Optional: Override default SSH password
     environment:
       - SSH_PASSWORD=password
