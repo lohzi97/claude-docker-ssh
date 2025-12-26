@@ -2,6 +2,12 @@
 
 A Docker container setup for running [Claude Code](https://claude.ai/code) (Anthropic's AI coding assistant) in an isolated, containerized environment with SSH access. This allows Claude Code to make changes safely without affecting the host system.
 
+>
+> **THIS 'code-review' BRANCH IS BUILT ON TOP OF 'master' BRANCH, SPECIFICALLY TO USE CLAUDE CODE IN DOCKER CONTAINER FOR CODE REVIEW.**
+> 
+> Refer to code-review-readme.md about how this is being tweaked.
+> 
+
 ## Features
 
 - **Isolated Environment**: Run Claude Code in a separate Docker container

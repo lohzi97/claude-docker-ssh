@@ -12,13 +12,13 @@ services:
       - ./claude_data:/home/claude/.claude
     # Optional: Override default SSH password
     environment:
-      - SSH_PASSWORD=your-secure-password
+      - SSH_PASSWORD=password
 
-# OPTIONAL
-# Uncomment below and replace 'self-hosted-ai-starter-it_demo', which should matches existing created network, so that other service can access it
-#     networks:
-#       - self-hosted-ai-starter-it_demo
+    # OPTIONAL
+    # Uncomment below and replace 'self-hosted-ai-starter-it_demo', which should matches existing created network, so that other service can access it
+    networks:
+      - self-hosted-ai-starter-kit_demo
 
-# networks:
-#   self-hosted-ai-starter-it_demo:
-#     external: true
+networks:
+  self-hosted-ai-starter-kit_demo:
+    external: true
