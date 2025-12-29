@@ -29,6 +29,20 @@ fi
 # Also ensure the entire home directory is owned by claude
 chown -R claude:claude /home/claude
 
+# Fix SSH key permissions if mounted
+if [ -f /home/claude/.ssh/id_ed25519 ]; then
+    chmod 600 /home/claude/.ssh/id_ed25519
+    chown claude:claude /home/claude/.ssh/id_ed25519
+fi
+if [ -f /home/claude/.ssh/id_ed25519.pub ]; then
+    chmod 644 /home/claude/.ssh/id_ed25519.pub
+    chown claude:claude /home/claude/.ssh/id_ed25519.pub
+fi
+if [ -f /home/claude/.ssh/config ]; then
+    chmod 644 /home/claude/.ssh/config
+    chown claude:claude /home/claude/.ssh/config
+fi
+
 # Set SSH password from environment variable
 if [ -n "$SSH_PASSWORD" ]; then
     echo "claude:$SSH_PASSWORD" | chpasswd
