@@ -30,18 +30,19 @@ fi
 chown -R claude:claude /home/claude
 
 # Fix SSH key permissions if mounted
-if [ -f /home/claude/.ssh/id_ed25519 ]; then
-    chmod 600 /home/claude/.ssh/id_ed25519
-    chown claude:claude /home/claude/.ssh/id_ed25519
-fi
-if [ -f /home/claude/.ssh/id_ed25519.pub ]; then
-    chmod 644 /home/claude/.ssh/id_ed25519.pub
-    chown claude:claude /home/claude/.ssh/id_ed25519.pub
-fi
-if [ -f /home/claude/.ssh/config ]; then
-    chmod 644 /home/claude/.ssh/config
-    chown claude:claude /home/claude/.ssh/config
-fi
+for file in /home/claude/.ssh/id_ed25519 /home/claude/.ssh/id_ed25519.pub /home/claude/.ssh/config; do
+    if [ -f "$file" ]; then
+        case "$file" in
+            *.ed25519)
+                chmod 600 "$file"
+                ;;
+            *)
+                chmod 644 "$file"
+                ;;
+        esac
+        chown claude:claude "$file"
+    fi
+done
 
 # Set SSH password from environment variable
 if [ -n "$SSH_PASSWORD" ]; then
