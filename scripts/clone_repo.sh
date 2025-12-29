@@ -122,6 +122,19 @@ if [ -e "$TARGET_DIR" ]; then
     exit 1
 fi
 
+# Fix SSH private key permissions if they exist and are too open
+SSH_DIR="$HOME/.ssh"
+if [ -d "$SSH_DIR" ]; then
+    # Fix .ssh directory permissions
+    chmod 700 "$SSH_DIR" 2>/dev/null
+
+    # Fix all private key files (.pem, id_rsa, id_ed25519, id_ecdsa, id_dsa)
+    find "$SSH_DIR" -type f \( -name "*.pem" -o -name "id_rsa" -o -name "id_ed25519" -o -name "id_ecdsa" -o -name "id_dsa" \) -exec chmod 600 {} \; 2>/dev/null
+
+    # Fix public key files
+    find "$SSH_DIR" -type f \( -name "*.pub" -o -name "known_hosts" -o -name "config" \) -exec chmod 644 {} \; 2>/dev/null
+fi
+
 # Clone the repository
 # Auto-accept SSH host keys to avoid interactive prompt
 if GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone "$INPUT_URL" "$TARGET_DIR"; then
