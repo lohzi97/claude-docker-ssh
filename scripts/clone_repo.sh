@@ -45,7 +45,8 @@ if [ -z "$1" ] || [ -z "$2" ]; then
 fi
 
 INPUT_URL="$1"
-SEARCH_DIR="$2"
+# Remove trailing slash from search directory to avoid double slashes in paths
+SEARCH_DIR="${2%/}"
 TARGET_DIR="${3:-}"
 
 # Ensure the search directory exists
