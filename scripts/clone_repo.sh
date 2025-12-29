@@ -123,7 +123,8 @@ if [ -e "$TARGET_DIR" ]; then
 fi
 
 # Clone the repository
-if git clone "$INPUT_URL" "$TARGET_DIR"; then
+# Auto-accept SSH host keys to avoid interactive prompt
+if GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone "$INPUT_URL" "$TARGET_DIR"; then
     echo "----------------------------------------------------------"
     echo "Successfully cloned to: $TARGET_DIR"
     exit 0
