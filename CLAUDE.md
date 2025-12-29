@@ -49,6 +49,9 @@ environment:
 ### Volume Mount
 
 - `./claude_data:/home/claude/.claude` - Persists Claude's authentication tokens, settings, and conversation history
+- `./config/ssh_key` → `/home/claude/.ssh/id_ed25519` - SSH private key for GitLab
+- `./config/ssh_key.pub` → `/home/claude/.ssh/id_ed25519.pub` - SSH public key for GitLab
+- `./config/ssh_config` → `/home/claude/.ssh/config` - SSH configuration (optional)
 
 ## Configuration
 
@@ -60,6 +63,52 @@ Claude settings are stored in `claude_data/settings.json`. Use `settings-example
 - `alwaysThinkingEnabled`: Enables extended thinking mode
 
 The `.gitignore` excludes `settings.json` to prevent API keys from being committed.
+
+## SSH Keys for GitLab Access
+
+To access private GitLab repositories from within the container, set up dedicated SSH keys:
+
+### Generate SSH key pair
+
+```bash
+ssh-keygen -t ed25519 -f ./config/ssh_key -N ""
+```
+
+### (Optional) Create SSH config
+
+For gitlab.com:
+```bash
+cat > ./config/ssh_config << 'EOF'
+Host gitlab.com
+    StrictHostKeyChecking no
+    User git
+EOF
+```
+
+For self-hosted GitLab:
+```bash
+cat > ./config/ssh_config << 'EOF'
+Host your-gitlab.example.com
+    StrictHostKeyChecking no
+    User git
+    Port 22
+EOF
+```
+
+### Add public key to GitLab
+
+```bash
+cat ./config/ssh_key.pub
+```
+
+Add this as a **Deploy Key** in GitLab (Settings → Repository → Deploy Keys) or as an SSH key to your user account.
+
+### Restart container
+
+```bash
+docker-compose down
+docker-compose up --build
+```
 
 ## Container Credentials
 

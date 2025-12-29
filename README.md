@@ -71,6 +71,61 @@ Edit `claude_data/settings.json` with your settings:
 }
 ```
 
+### SSH Keys for GitLab Access
+
+To access private GitLab repositories, you need to set up SSH keys for the container.
+
+#### Step 1: Generate SSH key pair
+
+```bash
+# Generate an ED25519 key pair (recommended)
+ssh-keygen -t ed25519 -f ./config/ssh_key -N ""
+```
+
+#### Step 2: (Optional) Create SSH config
+
+Create `./config/ssh_config` for GitLab-specific settings:
+
+**For gitlab.com:**
+```bash
+cat > ./config/ssh_config << 'EOF'
+Host gitlab.com
+    StrictHostKeyChecking no
+    User git
+EOF
+```
+
+**For self-hosted GitLab:**
+```bash
+cat > ./config/ssh_config << 'EOF'
+Host your-gitlab.example.com
+    StrictHostKeyChecking no
+    User git
+    Port 22
+EOF
+```
+
+#### Step 3: Add public key to GitLab
+
+Copy and add the public key as a **Deploy Key** in GitLab:
+
+```bash
+cat ./config/ssh_key.pub
+```
+
+In GitLab, go to: **Settings → Repository → Deploy Keys** (for project-specific access)
+
+Or add it to your user account: **Settings → SSH Keys** (for global access)
+
+#### Step 4: Restart the container
+
+```bash
+docker-compose down
+docker-compose up --build
+```
+
+The container will automatically set correct permissions (600 for private key, 644 for public key).
+
 ### Container Credentials
 
 | Setting | Value |
@@ -113,6 +168,9 @@ The container is built on `node:20-bullseye-slim` and includes:
 |-----------|----------------|---------|
 | `./config/.claude.json` | `/home/claude/.claude.json` | Claude permissions and MCP servers |
 | `./claude_data` | `/home/claude/.claude` | Claude settings and history |
+| `./config/ssh_key` | `/home/claude/.ssh/id_ed25519` | SSH private key for GitLab |
+| `./config/ssh_key.pub` | `/home/claude/.ssh/id_ed25519.pub` | SSH public key for GitLab |
+| `./config/ssh_config` | `/home/claude/.ssh/config` | SSH configuration (optional) |
 
 ## Permissions and MCP Configuration
 
