@@ -94,10 +94,17 @@ while IFS= read -r gitdir; do
     fi
 done < <(find "$SEARCH_DIR" -name ".git" -type d -prune 2>/dev/null)
 
-# If found, report and exit
+# If found, fetch updates and exit
 if [ "$FOUND_COUNT" -gt 0 ]; then
     echo "Repository already exists at: $FOUND_PATH"
-    exit 0
+    echo "Fetching updates..."
+    if git -C "$FOUND_PATH" fetch; then
+        echo "Successfully fetched updates."
+        exit 0
+    else
+        echo "Error: Failed to fetch updates."
+        exit 1
+    fi
 fi
 
 # Not found - proceed to clone
