@@ -44,6 +44,12 @@ for file in /home/claude/.ssh/id_ed25519 /home/claude/.ssh/id_ed25519.pub /home/
     fi
 done
 
+# Fix hook script permissions - make all hooks executable
+if [ -d /home/claude/.claude/hooks ]; then
+    chown -R claude:claude /home/claude/.claude/hooks
+    find /home/claude/.claude/hooks -type f -exec chmod +x {} \;
+fi
+
 # Set SSH password from environment variable
 if [ -n "$SSH_PASSWORD" ]; then
     echo "claude:$SSH_PASSWORD" | chpasswd
