@@ -44,6 +44,12 @@ The skill automatically performs necessary git operations:
 
 ## Review Process
 
+**IMPORTANT: Single Output Requirement**
+- After completing all analysis steps, compile the ENTIRE review report into ONE comprehensive message
+- The single message must contain: Executive Summary, Detailed Findings, Specific Recommendations, File-by-File Analysis, Pre-Merge Checklist, and Summary
+- Do NOT output intermediate results or separate the report into multiple messages
+- Use TodoWrite to track internal progress, but do not output todo updates during the review
+
 ### 0. **Git Repository Preparation**
 Before analysis begins, the skill:
 1. Verifies git repository status
@@ -135,6 +141,8 @@ git diff --name-status <target>..<source>
 
 ## Output Format
 
+**CRITICAL OUTPUT REQUIREMENT:** The entire review report including the Executive Summary, Detailed Findings, Specific Recommendations, File-by-File Analysis, and Commit History (if applicable) MUST be output in a **SINGLE message** at the end of the review process. Do NOT separate the detailed report and summary into multiple messages.
+
 The review will generate:
 
 ### **Executive Summary**
@@ -169,6 +177,14 @@ For each modified file:
 - Individual commit analysis
 - Commit message quality assessment
 - Logical grouping of changes
+
+### **Pre-Merge Checklist**
+- Checklist of items to address before merging
+- Prioritized by severity (Critical/High/Medium/Low)
+
+### **Summary**
+- Brief recap of key points
+- Final recommendation (merge/conditional merge/do not merge)
 
 ## Usage Examples
 
@@ -277,7 +293,7 @@ If you encounter issues:
    - Check if you have access to the remote repository
    - Ensure git remotes are configured: `git remote -v`
 
-2. **"No changes found"**: 
+2. **"No changes found"**:
    - Verify source and target are different
    - Check if branches are already merged
    - Use `git log target..source` to confirm commits exist
